@@ -12,7 +12,10 @@ public class InputManager : MonoBehaviour
     public static event Action<bool> OnInteract;
     public static event Action<bool> OnFire;
     public static event Action<bool> OnAim;
-    public static event Action<Vector2> OnLook;
+    public static event Action<Vector2> OnMouseLook;
+    public static event Action<Vector2> OnGamepadLook;
+    public static ActiveDevice CurrentActiveDevice { get; private set; } = ActiveDevice.Mouse;
+    public static event Action<ActiveDevice> OnActiveDeviceChanged;
 
     void Awake()
     {
@@ -82,6 +85,17 @@ public class InputManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         inputActions = new InputActions();
     }
+
+    private void UpdateActiveDevice(InputDevice device)
+{
+    ActiveDevice detected = device is Gamepad ? ActiveDevice.Gamepad : ActiveDevice.Mouse;
+    
+    if (detected != CurrentActiveDevice)
+    {
+        CurrentActiveDevice = detected;
+        OnActiveDeviceChanged?.Invoke(CurrentActiveDevice);
+    }
+}
 
     #region Move
     void MovePerformed(InputAction.CallbackContext ctx)
@@ -160,11 +174,29 @@ public class InputManager : MonoBehaviour
 
     void LookPerformed(InputAction.CallbackContext ctx)
     {
-        OnLook?.Invoke(ctx.ReadValue<Vector2>());
+        UpdateActiveDevice(ctx.control.device);
+
+         if (CurrentActiveDevice == ActiveDevice.Mouse && ctx.control.device is Mouse)
+        {
+           OnMouseLook?.Invoke(ctx.ReadValue<Vector2>()); 
+        }
+        else if (CurrentActiveDevice == ActiveDevice.Gamepad && ctx.control.device is Gamepad)
+        {
+           OnGamepadLook?.Invoke(ctx.ReadValue<Vector2>()); 
+        }
+        
+        
     }
     void LookCanceled(InputAction.CallbackContext ctx)
     {
-        OnLook?.Invoke(Vector2.zero);
+        if (CurrentActiveDevice == ActiveDevice.Mouse && ctx.control.device is Mouse)
+    {
+        OnMouseLook?.Invoke(Vector2.zero);
+    }
+    else if (CurrentActiveDevice == ActiveDevice.Gamepad && ctx.control.device is Gamepad)
+    {
+        OnGamepadLook?.Invoke(Vector2.zero);
+    }
     }
 
     #endregion
