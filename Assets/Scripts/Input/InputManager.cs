@@ -7,15 +7,17 @@ public class InputManager : MonoBehaviour
     public static InputManager Instance {get; private set;}
     private InputActions inputActions;
     public static event Action<Vector2> OnMove;
-    public static event Action<bool> OnSprint;
-    public static event Action<bool> OnCrouch;
+    public static event Action<bool> OnMouseSprint; //Mouse = Klavye-Mouse Sistemi
+    public static event Action<bool> OnGamepadSprint;
+    public static event Action<bool> OnMouseCrouch;
+    public static event Action<bool> OnGamepadCrouch;
     public static event Action<bool> OnInteract;
     public static event Action<bool> OnFire;
     public static event Action<bool> OnAim;
     public static event Action<Vector2> OnMouseLook;
     public static event Action<Vector2> OnGamepadLook;
     public static ActiveDevice CurrentActiveDevice { get; private set; } = ActiveDevice.Mouse;
-    public static event Action<ActiveDevice> OnActiveDeviceChanged;
+    public static event Action<ActiveDevice> OnActiveDeviceChanged;// UI Degisim kısmında kullanılacak
 
     void Awake()
     {
@@ -93,7 +95,7 @@ public class InputManager : MonoBehaviour
     if (detected != CurrentActiveDevice)
     {
         CurrentActiveDevice = detected;
-        OnActiveDeviceChanged?.Invoke(CurrentActiveDevice);
+        OnActiveDeviceChanged?.Invoke(CurrentActiveDevice); // UI Degisim kısmında kullanılacak
     }
 }
 
@@ -112,22 +114,54 @@ public class InputManager : MonoBehaviour
     #region Sprint
     void SprintPerformed(InputAction.CallbackContext ctx)
     {
-        OnSprint?.Invoke(true);
+        UpdateActiveDevice(ctx.control.device);
+        if(CurrentActiveDevice == ActiveDevice.Mouse && ctx.control.device is Keyboard)
+        {
+            OnMouseSprint?.Invoke(true);
+        }
+        else if(CurrentActiveDevice == ActiveDevice.Gamepad && ctx.control.device is Gamepad)
+        {
+            OnGamepadSprint?.Invoke(true);
+        }
+        
     }
     void SprintCanceled(InputAction.CallbackContext ctx)
     {
-        OnSprint?.Invoke(false);
+        if(CurrentActiveDevice == ActiveDevice.Mouse && ctx.control.device is Keyboard)
+        {
+            OnMouseSprint?.Invoke(false);
+        }
+        else if(CurrentActiveDevice == ActiveDevice.Gamepad && ctx.control.device is Gamepad)
+        {
+            OnGamepadSprint?.Invoke(false);
+        }
     }
     #endregion
 
     #region Crouch
     void CrouchPerformed(InputAction.CallbackContext ctx)
     {
-        OnCrouch?.Invoke(true);
+         UpdateActiveDevice(ctx.control.device);
+         
+        if(CurrentActiveDevice == ActiveDevice.Mouse && ctx.control.device is Keyboard)
+        {
+            OnMouseCrouch?.Invoke(true);
+        }
+        else if(CurrentActiveDevice == ActiveDevice.Gamepad && ctx.control.device is Gamepad)
+        {
+            OnGamepadCrouch?.Invoke(true);
+        }
     }
     void CrouchCanceled(InputAction.CallbackContext ctx)
     {
-        OnCrouch?.Invoke(false);
+        if(CurrentActiveDevice == ActiveDevice.Mouse && ctx.control.device is Keyboard)
+        {
+            OnMouseCrouch?.Invoke(false);
+        }
+        else if(CurrentActiveDevice == ActiveDevice.Gamepad && ctx.control.device is Gamepad)
+        {
+            OnGamepadCrouch?.Invoke(false);
+        }
     }
     #endregion
 

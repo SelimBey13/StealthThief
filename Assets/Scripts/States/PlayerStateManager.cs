@@ -14,57 +14,98 @@ public class PlayerStateManager : MonoBehaviour
     public bool IsAiming {get; private set;}
     public bool IsFiring {get; private set;}
     public bool IsInteracting {get; private set;}
-    public bool IsCrouching {get; private set;}
-    private bool isSprinting;
+    public bool IsMouseCrouching {get; private set;}
+    public bool IsGamepadCrouching {get; private set;}
+    public bool IsMouseSprinting {get; private set;}
+    public bool IsGamepadSprinting {get; private set;}
+
+
     private Vector2 currentMoveInput;
+    private bool sprintLocked;
+    public bool CrouchLocked {get; private set;}
 
     void Awake()
     {
         Instance = this;
     }
+    void Update()
+    {
+        Debug.Log(CurrentMainState);
+        Debug.Log("SprintLock"+sprintLocked);
+        Debug.Log("CrouchLock"+CrouchLocked);
+    }
+
     void OnEnable()
     {
         InputManager.OnAim += AimInputs;
         InputManager.OnFire += FireInputs;
         InputManager.OnInteract += InteractInputs;
-        InputManager.OnCrouch += CrouchInputs;
         InputManager.OnMove += MoveInputs;
-        InputManager.OnSprint += SprintInputs;
+
+        InputManager.OnMouseCrouch += MouseCrouchInputs;
+        InputManager.OnGamepadCrouch += GamepadCrouchInputs;
+
+        InputManager.OnMouseSprint += MouseSprintInputs;
+        InputManager.OnGamepadSprint += GamepadSprintInputs;
     }
     void OnDisable()
     {
-        InputManager.OnAim -= AimInputs;
+       InputManager.OnAim -= AimInputs;
         InputManager.OnFire -= FireInputs;
         InputManager.OnInteract -= InteractInputs;
-        InputManager.OnCrouch -= CrouchInputs;
         InputManager.OnMove -= MoveInputs;
-        InputManager.OnSprint -= SprintInputs;
+
+        InputManager.OnMouseCrouch -= MouseCrouchInputs;
+        InputManager.OnGamepadCrouch -= GamepadCrouchInputs;
+
+        InputManager.OnMouseSprint -= MouseSprintInputs;
+        InputManager.OnGamepadSprint -= GamepadSprintInputs;
     }
 
     void MoveInputs(Vector2 value)
     {
         currentMoveInput = value;
-        UpdateMainStates();
-    }
-    void SprintInputs(bool value)
-    {
-        isSprinting = value;
+
+         if (currentMoveInput == Vector2.zero)
+         {
+            sprintLocked = false;
+         }
+        
         UpdateMainStates();
     }
     void UpdateMainStates()
     {
-        if(currentMoveInput == Vector2.zero)
+        if(InputManager.CurrentActiveDevice == ActiveDevice.Gamepad)
         {
-            CurrentMainState = PlayerMainStates.Idle;
-        }
-        else if(isSprinting)
+            if(currentMoveInput == Vector2.zero)
+            {
+                CurrentMainState = PlayerMainStates.Idle;
+            }
+            else if(sprintLocked && !CrouchLocked)
+            {
+                CurrentMainState = PlayerMainStates.Sprint;
+            }
+            else
+            {
+                CurrentMainState = PlayerMainStates.Walk;
+            }  
+            }
+        else if(InputManager.CurrentActiveDevice == ActiveDevice.Mouse)
         {
-            CurrentMainState = PlayerMainStates.Sprint;
+            if(currentMoveInput == Vector2.zero)
+            {
+                CurrentMainState = PlayerMainStates.Idle;
+            }
+            else if(IsMouseSprinting && !IsMouseCrouching)
+            {
+                CurrentMainState = PlayerMainStates.Sprint;
+            }
+            else
+            {
+                CurrentMainState = PlayerMainStates.Walk;
+            } 
         }
-        else
-        {
-            CurrentMainState = PlayerMainStates.Walk;
-        }
+        
     }
     void AimInputs(bool value)
     {
@@ -78,8 +119,37 @@ public class PlayerStateManager : MonoBehaviour
     {
         IsInteracting = value;
     }
-    void CrouchInputs(bool value)
+    void MouseCrouchInputs(bool value)
     {
-        IsCrouching = value;
+        IsMouseCrouching = value;
+    }
+    void GamepadCrouchInputs(bool value)
+    {
+        IsGamepadCrouching = value;
+
+        if(value)
+        {
+            
+            CrouchLocked = !CrouchLocked;
+            UpdateMainStates();  
+        }
+
+    }
+    void MouseSprintInputs(bool value)
+    {
+        IsMouseSprinting = value;
+    }
+
+    void GamepadSprintInputs(bool value)
+    {
+        IsGamepadSprinting = value;
+
+        if (value && CurrentMainState == PlayerMainStates.Walk)
+        {
+            sprintLocked = true;
+            CrouchLocked = false;
+            UpdateMainStates();
+        }
+
     }
 }
