@@ -23,9 +23,9 @@ public class CameraController : MonoBehaviour
 
     void Start()
 {
-    pitch = 6f;
-    yaw = -10f;
-    cameraConstantTransformVector = new Vector3(0.41f,-0.12f,-1.18f);
+    pitch = 1.933f;
+    yaw = -1.543f;
+    cameraConstantTransformVector = new Vector3(0.608f, 0.015f, -1.572f);
 }
     void Update()
     {

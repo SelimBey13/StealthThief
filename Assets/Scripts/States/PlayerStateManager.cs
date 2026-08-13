@@ -33,6 +33,7 @@ public class PlayerStateManager : MonoBehaviour
         Debug.Log(CurrentMainState);
         Debug.Log("SprintLock"+sprintLocked);
         Debug.Log("CrouchLock"+CrouchLocked);
+        Debug.Log("Crouch: " + IsMouseCrouching);
     }
 
     void OnEnable()
@@ -138,6 +139,7 @@ public class PlayerStateManager : MonoBehaviour
     void MouseSprintInputs(bool value)
     {
         IsMouseSprinting = value;
+        UpdateMainStates();
     }
 
     void GamepadSprintInputs(bool value)

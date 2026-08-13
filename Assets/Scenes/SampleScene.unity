@@ -345,7 +345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
   playerOffSet: {fileID: 1785892315}
-  cameraRadius: 1.260248
+  cameraRadius: 1.693045
   cameraSphereRadius: 0.05
   isAiming: 0
   mouseSensitivityX: 30
@@ -526,6 +526,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 411888672}
+  - component: {fileID: 411888675}
   - component: {fileID: 411888673}
   - component: {fileID: 411888674}
   - component: {fileID: 411888671}
@@ -569,7 +570,7 @@ Rigidbody:
   m_GameObject: {fileID: 411888669}
   serializedVersion: 5
   m_Mass: 1
-  m_LinearDamping: 0
+  m_LinearDamping: 3
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -617,9 +618,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   playerVisualTransform: {fileID: 8708418133945745847}
-  playerWalkSpeed: 7
-  playerSprintSpeed: 15
-  groundDrag: 2
+  playerWalkSpeed: 10
+  playerSprintSpeed: 16
+  groundDrag: 5
   rotationSpeed: 2
 --- !u!114 &411888674
 MonoBehaviour:
@@ -633,6 +634,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81d46642b4b083b439540dd29b123c2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStateManager
+--- !u!114 &411888675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 411888669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a99e1525d3b7444ba21ea1c1ff0935, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimationController
+  animator: {fileID: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0

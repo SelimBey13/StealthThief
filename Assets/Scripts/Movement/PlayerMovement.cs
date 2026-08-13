@@ -68,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (PlayerStateManager.Instance.IsMouseCrouching || PlayerStateManager.Instance.CrouchLocked)
         {
-            currentSpeed = PlayerStateManager.Instance.IsAiming ? playerWalkSpeed / 4 : playerWalkSpeed / 2;
+            currentSpeed = PlayerStateManager.Instance.IsAiming ? playerWalkSpeed * 0.60f : playerWalkSpeed * 0.80f;
         }
    
         playerRigidbody.AddForce(moveDirection.normalized * currentSpeed, ForceMode.Force);
