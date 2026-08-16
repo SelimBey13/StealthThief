@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Scripting.APIUpdating;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -13,11 +12,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float rotationSpeed;
     Vector3 cameraDirectionForward;
     Vector3 cameraDirectionRight;
+    Vector3 moveDirection;
+    [SerializeField] float aimGamepadTurnSensitivity;
+    [SerializeField] float aimMouseTurnSensitivity;
+    private float aimTurnSensitivity;
+    private ActiveDevice activeDevice;
 
     Vector2 moveInput;
     bool isMouseCrouching;
     bool isGamepadCrouching;
     bool isAiming;
+    Vector2 generalLookInput;
     
     
     void Awake()
@@ -27,11 +32,13 @@ public class PlayerMovement : MonoBehaviour
     }
     void Update()
     {
-        
+        SetCameraDirection();
+        UpdateVisualRotation();
     }
     void FixedUpdate()
     {
-        SetCameraDirection();
+        
+        moveDirection = cameraDirectionForward * moveInput.y + cameraDirectionRight * moveInput.x;
         SetPlayerMovement();
     }
 
@@ -41,6 +48,10 @@ public class PlayerMovement : MonoBehaviour
         InputManager.OnMouseCrouch += MouseCrouchInputs;
         InputManager.OnGamepadCrouch += GamepadCrouchInputs;
         InputManager.OnAim += AimInputs;
+        InputManager.OnMouseLook += MouseLookInputs;
+        InputManager.OnGamepadLook += GamepadLookInputs;
+        InputManager.OnActiveDeviceChanged += ActiveDeviceInfo;
+
     }
     void OnDisable()
     {
@@ -48,6 +59,8 @@ public class PlayerMovement : MonoBehaviour
         InputManager.OnMouseCrouch -= MouseCrouchInputs;
         InputManager.OnGamepadCrouch -= GamepadCrouchInputs;
         InputManager.OnAim -= AimInputs;
+        InputManager.OnMouseLook -= MouseLookInputs;
+        InputManager.OnGamepadLook -= GamepadLookInputs;
     }
 
     void SetCameraDirection()
@@ -60,31 +73,49 @@ public class PlayerMovement : MonoBehaviour
     }
     void SetPlayerMovement()
 {
-    Vector3 moveDirection = cameraDirectionForward * moveInput.y + cameraDirectionRight * moveInput.x;
 
-   if(PlayerStateManager.Instance.CurrentMainState == PlayerStateManager.PlayerMainStates.Walk)
-    {
+  if(PlayerStateManager.Instance.CurrentMainState == PlayerStateManager.PlayerMainStates.Walk)
+    { 
         float currentSpeed = playerWalkSpeed;
 
         if (PlayerStateManager.Instance.IsMouseCrouching || PlayerStateManager.Instance.CrouchLocked)
         {
-            currentSpeed = PlayerStateManager.Instance.IsAiming ? playerWalkSpeed * 0.60f : playerWalkSpeed * 0.80f;
+            currentSpeed = PlayerStateManager.Instance.IsAiming ? playerWalkSpeed * 0.80f : playerWalkSpeed * 0.90f;
         }
-   
         playerRigidbody.AddForce(moveDirection.normalized * currentSpeed, ForceMode.Force);
-        Quaternion targetRotation = Quaternion.LookRotation(cameraDirectionForward);
-        playerVisualTransform.rotation = Quaternion.Slerp(playerVisualTransform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);       
     }
     else if(PlayerStateManager.Instance.CurrentMainState == PlayerStateManager.PlayerMainStates.Sprint)
     {
         playerRigidbody.AddForce(moveDirection.normalized * playerSprintSpeed, ForceMode.Force);
-        
-        if(moveDirection != Vector3.zero)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-            playerVisualTransform.rotation = Quaternion.Slerp(playerVisualTransform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
-        }
     }
+}
+
+    void UpdateVisualRotation()
+{
+    Quaternion targetRotation;
+
+    aimTurnSensitivity = (activeDevice == ActiveDevice.Mouse)? aimMouseTurnSensitivity : aimGamepadTurnSensitivity;
+
+    if(PlayerStateManager.Instance.IsAiming)
+    {
+        playerVisualTransform.Rotate(Vector3.up,generalLookInput.x * aimTurnSensitivity * Time.deltaTime);
+        return;
+
+    }
+    else if (PlayerStateManager.Instance.CurrentMainState == PlayerStateManager.PlayerMainStates.Walk)
+    {
+        targetRotation = Quaternion.LookRotation(cameraDirectionForward);
+    }
+    else if (PlayerStateManager.Instance.CurrentMainState == PlayerStateManager.PlayerMainStates.Sprint && moveDirection != Vector3.zero)
+    {
+        targetRotation = Quaternion.LookRotation(moveDirection);
+    }
+    else
+    {
+        return;
+    }
+
+    playerVisualTransform.rotation = Quaternion.Slerp(playerVisualTransform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 }
     
     
@@ -104,5 +135,17 @@ public class PlayerMovement : MonoBehaviour
     void AimInputs(bool value)
     {
         isAiming = value;
+    }
+    void MouseLookInputs(Vector2 mouseLookInput)
+    {
+        this.generalLookInput = mouseLookInput;
+    }
+    void GamepadLookInputs(Vector2 gamepadLookInput)
+    {
+        this.generalLookInput = gamepadLookInput;
+    }
+    void ActiveDeviceInfo(ActiveDevice activeDevice)
+    {
+        this.activeDevice = activeDevice;
     }
 }

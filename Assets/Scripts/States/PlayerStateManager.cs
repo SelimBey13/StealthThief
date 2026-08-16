@@ -21,7 +21,7 @@ public class PlayerStateManager : MonoBehaviour
 
 
     private Vector2 currentMoveInput;
-    private bool sprintLocked;
+    public bool SprintLocked {get; private set;}
     public bool CrouchLocked {get; private set;}
 
     void Awake()
@@ -31,9 +31,10 @@ public class PlayerStateManager : MonoBehaviour
     void Update()
     {
         Debug.Log(CurrentMainState);
-        Debug.Log("SprintLock"+sprintLocked);
+        Debug.Log("SprintLock"+SprintLocked);
         Debug.Log("CrouchLock"+CrouchLocked);
         Debug.Log("Crouch: " + IsMouseCrouching);
+        Debug.Log("Aiming: " + IsAiming);
     }
 
     void OnEnable()
@@ -69,7 +70,7 @@ public class PlayerStateManager : MonoBehaviour
 
          if (currentMoveInput == Vector2.zero)
          {
-            sprintLocked = false;
+            SprintLocked = false;
          }
         
         UpdateMainStates();
@@ -82,7 +83,7 @@ public class PlayerStateManager : MonoBehaviour
             {
                 CurrentMainState = PlayerMainStates.Idle;
             }
-            else if(sprintLocked && !CrouchLocked)
+            else if(SprintLocked && !CrouchLocked)
             {
                 CurrentMainState = PlayerMainStates.Sprint;
             }
@@ -110,6 +111,12 @@ public class PlayerStateManager : MonoBehaviour
     }
     void AimInputs(bool value)
     {
+        if (value && CurrentMainState == PlayerMainStates.Sprint)
+        {
+            SprintLocked = false;
+            IsMouseSprinting = false;
+            UpdateMainStates();
+        }
         IsAiming = value;
     }
     void FireInputs(bool value)
@@ -123,6 +130,7 @@ public class PlayerStateManager : MonoBehaviour
     void MouseCrouchInputs(bool value)
     {
         IsMouseCrouching = value;
+
     }
     void GamepadCrouchInputs(bool value)
     {
@@ -130,7 +138,7 @@ public class PlayerStateManager : MonoBehaviour
 
         if(value)
         {
-            
+            SprintLocked = false;
             CrouchLocked = !CrouchLocked;
             UpdateMainStates();  
         }
@@ -138,7 +146,10 @@ public class PlayerStateManager : MonoBehaviour
     }
     void MouseSprintInputs(bool value)
     {
+        if(IsAiming) return;
+
         IsMouseSprinting = value;
+        if(value) IsAiming = false;
         UpdateMainStates();
     }
 
@@ -148,8 +159,9 @@ public class PlayerStateManager : MonoBehaviour
 
         if (value && CurrentMainState == PlayerMainStates.Walk)
         {
-            sprintLocked = true;
+            SprintLocked = true;
             CrouchLocked = false;
+            IsAiming = false;
             UpdateMainStates();
         }
 
