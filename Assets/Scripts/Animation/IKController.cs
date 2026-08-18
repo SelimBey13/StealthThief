@@ -6,6 +6,7 @@ public class IKController : MonoBehaviour
 {
     Animator anim;
     [SerializeField] RectTransform crosshairRectTransform;
+    Vector3 smoothedTarget;
 
     void Awake()
     {
@@ -26,18 +27,26 @@ public class IKController : MonoBehaviour
 
             if(Physics.Raycast(ray,out RaycastHit hit, 100f))
             {
-                targetPosition = hit.point;
+                targetPosition = hit.point; 
             }
             else
             {
                 targetPosition = ray.GetPoint(50f);
             }
 
-            anim.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
-            anim.SetIKPosition(AvatarIKGoal.RightHand, targetPosition);
+            smoothedTarget = Vector3.Lerp(smoothedTarget, targetPosition, 15f * Time.deltaTime);
 
-            anim.SetLookAtWeight(0.5f); // ne kadar etkili olsun, test ede ede ayarlarsın (0.3-0.7 arası makul)
-            anim.SetLookAtPosition(targetPosition);
+            anim.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
+            anim.SetIKPosition(AvatarIKGoal.RightHand, smoothedTarget);
+
+            anim.SetLookAtWeight(
+                weight: 1f,      // genel etki
+                bodyWeight: 0.3f, // GÖVDENİN ne kadar döneceği
+                headWeight: 0.6f, // KAFANIN ne kadar döneceği
+                eyesWeight: 0.5f,  // gözlerin ne kadar döneceği
+                clampWeight: 0.5f  // aşırı bükülmeyi sınırlama
+                );
+            anim.SetLookAtPosition(smoothedTarget);
         }
         else
         {

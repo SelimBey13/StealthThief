@@ -71,11 +71,11 @@ public class CameraController : MonoBehaviour
     {
         Vector3 targetOffset;
 
-        bool isCrouching = (PlayerStateManager.Instance.IsMouseCrouching || PlayerStateManager.Instance.CrouchLocked);
+        bool isCrouching = PlayerStateManager.Instance.IsMouseCrouching || PlayerStateManager.Instance.CrouchLocked;
         bool isAiming = PlayerStateManager.Instance.IsAiming;
         if (isAiming && isCrouching)
         {
-            targetOffset = aimCameraTransformVector - new Vector3(0f, 0.38f, 0f);;
+            targetOffset = aimCameraTransformVector - new Vector3(0f, 0.38f, 0f);
         }
         else if(isAiming)
         {

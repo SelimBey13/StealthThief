@@ -37,7 +37,8 @@ public class AnimationController : MonoBehaviour
     }
     void SetSubAnimations()
     {
-        animator.SetFloat("IsCrouching",(PlayerStateManager.Instance.IsMouseCrouching || PlayerStateManager.Instance.CrouchLocked) ? 0f : 1f
+        bool isCrouching = PlayerStateManager.Instance.IsMouseCrouching || PlayerStateManager.Instance.CrouchLocked;
+        animator.SetFloat("IsCrouching",isCrouching ? 0f : 1f
         ,0.15f,Time.deltaTime);
         animator.SetFloat("MoveX", MoveInput.x, 0.6f, Time.deltaTime);
         animator.SetFloat("MoveY", MoveInput.y, 0.6f, Time.deltaTime);
@@ -48,4 +49,5 @@ public class AnimationController : MonoBehaviour
             animator.SetBool("IsAiming",PlayerStateManager.Instance.IsAiming);
             animator.SetLayerWeight(1,PlayerStateManager.Instance.IsAiming? 1f : 0f);
     }
+
 }

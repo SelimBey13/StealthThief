@@ -135,6 +135,10 @@ public class PlayerMovement : MonoBehaviour
     void AimInputs(bool value)
     {
         isAiming = value;
+        if (value)
+    {
+        playerVisualTransform.forward = cameraDirectionForward;
+    }
     }
     void MouseLookInputs(Vector2 mouseLookInput)
     {
