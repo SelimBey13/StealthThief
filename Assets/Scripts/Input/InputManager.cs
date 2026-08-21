@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class InputManager : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class InputManager : MonoBehaviour
     public static event Action<bool> OnInteract;
     public static event Action<bool> OnFire;
     public static event Action<bool> OnAim;
+    public static event Action<bool> OnPause;
     public static event Action<Vector2> OnMouseLook;
     public static event Action<Vector2> OnGamepadLook;
     public static ActiveDevice CurrentActiveDevice { get; private set; } = ActiveDevice.Mouse;
@@ -24,10 +26,18 @@ public class InputManager : MonoBehaviour
         AwakingController();
     }
 
+   void Start()
+{
+    SwitchToMenuMap();
+}
+
+    void Update()
+    {
+        Debug.Log("Player map aktif mi: " + inputActions.Player.enabled);
+        Debug.Log("Menu map aktif mi: " + inputActions.Menu.enabled);
+    }
     void OnEnable()
     {
-        inputActions.Player.Enable(); // bu sistem daha sonra değiştirilecek,menü mantıgı
-
         inputActions.Player.Move.performed += MovePerformed;
         inputActions.Player.Move.canceled += MoveCanceled;
 
@@ -48,11 +58,17 @@ public class InputManager : MonoBehaviour
         
         inputActions.Player.Look.performed += LookPerformed;
         inputActions.Player.Look.canceled += LookCanceled;
+
+        inputActions.Player.Pause.performed += PausePerformed;
+        inputActions.Player.Pause.canceled += PauseCanceled;
+
+        inputActions.Menu.Pause.performed += PausePerformed;
+        inputActions.Menu.Pause.canceled += PauseCanceled;
     }
 
     void OnDisable()
     {
-        inputActions.Player.Disable(); // bu sistem daha sonra değiştirilecek,menü mantıgı
+        if(inputActions == null) return;
 
         inputActions.Player.Move.performed -= MovePerformed;
         inputActions.Player.Move.canceled -= MoveCanceled;
@@ -74,6 +90,24 @@ public class InputManager : MonoBehaviour
 
         inputActions.Player.Look.performed -= LookPerformed;
         inputActions.Player.Look.canceled -= LookCanceled;
+        
+        inputActions.Player.Pause.performed -= PausePerformed;
+        inputActions.Player.Pause.canceled -= PauseCanceled;
+
+        inputActions.Menu.Pause.performed -= PausePerformed;
+        inputActions.Menu.Pause.canceled -= PauseCanceled;
+    }
+
+    public void SwitchToMenuMap()
+    {    
+        inputActions.Player.Disable();
+        inputActions.Menu.Enable();
+    }
+    public void SwitchToPlayerMap()
+    {
+        inputActions.Menu.Disable();
+        inputActions.Player.Enable();  
+        Debug.Log("SwitchToPlayerMap çağrıldı. Player: " + inputActions.Player.enabled + ", Menu: " + inputActions.Menu.enabled); 
     }
 
     void AwakingController()
@@ -233,5 +267,18 @@ public class InputManager : MonoBehaviour
     }
     }
 
+    #endregion
+
+    #region Pause
+
+    void PausePerformed(InputAction.CallbackContext ctx)
+    {
+        OnPause?.Invoke(true);
+    }
+
+    void PauseCanceled(InputAction.CallbackContext ctx)
+    {
+        OnPause?.Invoke(false);
+    }
     #endregion
 }

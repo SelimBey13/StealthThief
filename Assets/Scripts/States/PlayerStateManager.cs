@@ -146,8 +146,7 @@ public class PlayerStateManager : MonoBehaviour
     }
     void MouseSprintInputs(bool value)
     {
-        if(IsAiming) return;
-
+        //if(IsAiming) return; ->
         IsMouseSprinting = value;
         if(value) IsAiming = false;
         UpdateMainStates();

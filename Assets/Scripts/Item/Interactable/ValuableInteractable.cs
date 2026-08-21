@@ -1,14 +1,20 @@
+using System;
 using UnityEngine;
 
 public class ValuableInteractable : Interactable
 {
-    [SerializeField] int valuableLevel; // 1-Cheap 2-Mid 3-Expensive
-    [SerializeField] float value; // 1*değer =2, 2*değer =3;
+    [SerializeField] int valuableLevel;
+    [SerializeField] float value;
+    public static event Action<float> OnItemTaken;
+    public static event Action OnTakenItemNumber;
 
     public override void Interact()
     {
         gameObject.SetActive(false);
         Debug.Log("item alindi test");
+        OnItemTaken?.Invoke(value);
+        OnTakenItemNumber?.Invoke();
+        
     }
 
 
