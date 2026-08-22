@@ -1,8 +1,7 @@
 using UnityEngine;
 using System;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
-
+using UnityEditor;
 public class InputManager : MonoBehaviour
 {
     public static InputManager Instance {get; private set;}
@@ -20,10 +19,12 @@ public class InputManager : MonoBehaviour
     public static event Action<Vector2> OnGamepadLook;
     public static ActiveDevice CurrentActiveDevice { get; private set; } = ActiveDevice.Mouse;
     public static event Action<ActiveDevice> OnActiveDeviceChanged;// UI Degisim kısmında kullanılacak
+    public bool IsMenuMapActive{get; private set;}
 
     void Awake()
     {
         AwakingController();
+        IsMenuMapActive = true;
     }
 
    void Start()
@@ -64,6 +65,24 @@ public class InputManager : MonoBehaviour
 
         inputActions.Menu.Pause.performed += PausePerformed;
         inputActions.Menu.Pause.canceled += PauseCanceled;
+
+        // MENU
+
+        inputActions.Menu.Point.performed += ActiveDeviceForMenu;
+        inputActions.Menu.Point.canceled += ActiveDeviceForMenu;
+
+        inputActions.Menu.LeftClick.performed += ActiveDeviceForMenu;
+        inputActions.Menu.LeftClick.canceled += ActiveDeviceForMenu;
+
+        inputActions.Menu.Submit.performed += ActiveDeviceForMenu;
+        inputActions.Menu.Submit.canceled += ActiveDeviceForMenu;
+
+        inputActions.Menu.Cancel.performed += ActiveDeviceForMenu;
+        inputActions.Menu.Cancel.canceled += ActiveDeviceForMenu;
+
+        inputActions.Menu.Move.performed += ActiveDeviceForMenu;
+        inputActions.Menu.Move.canceled += ActiveDeviceForMenu;
+        
     }
 
     void OnDisable()
@@ -96,18 +115,38 @@ public class InputManager : MonoBehaviour
 
         inputActions.Menu.Pause.performed -= PausePerformed;
         inputActions.Menu.Pause.canceled -= PauseCanceled;
+
+        //MENU
+
+        inputActions.Menu.Point.performed -= ActiveDeviceForMenu;
+        inputActions.Menu.Point.canceled -= ActiveDeviceForMenu;
+
+        inputActions.Menu.LeftClick.performed -= ActiveDeviceForMenu;
+        inputActions.Menu.LeftClick.canceled -= ActiveDeviceForMenu;
+
+        inputActions.Menu.Submit.performed -= ActiveDeviceForMenu;
+        inputActions.Menu.Submit.canceled -= ActiveDeviceForMenu;
+
+        inputActions.Menu.Cancel.performed -= ActiveDeviceForMenu;
+        inputActions.Menu.Cancel.canceled -= ActiveDeviceForMenu;
+
+        inputActions.Menu.Move.performed -= ActiveDeviceForMenu;
+        inputActions.Menu.Move.canceled -= ActiveDeviceForMenu;
     }
 
     public void SwitchToMenuMap()
     {    
         inputActions.Player.Disable();
         inputActions.Menu.Enable();
+        IsMenuMapActive = true;
+        MenuHelper.Instance.SetCursorForMenu();
     }
     public void SwitchToPlayerMap()
     {
         inputActions.Menu.Disable();
         inputActions.Player.Enable();  
-        Debug.Log("SwitchToPlayerMap çağrıldı. Player: " + inputActions.Player.enabled + ", Menu: " + inputActions.Menu.enabled); 
+        IsMenuMapActive = false;
+        MenuHelper.Instance.SetCursorForGameplay();
     }
 
     void AwakingController()
@@ -281,4 +320,10 @@ public class InputManager : MonoBehaviour
         OnPause?.Invoke(false);
     }
     #endregion
+
+    void ActiveDeviceForMenu(InputAction.CallbackContext ctx)
+    {
+        if(ctx.control == null) return;
+        UpdateActiveDevice(ctx.control.device);
+    }
 }

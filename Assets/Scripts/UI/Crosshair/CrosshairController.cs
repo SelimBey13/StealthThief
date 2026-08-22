@@ -8,7 +8,6 @@ public class CrosshairController : MonoBehaviour
     void Awake()
     {
         crosshair = GetComponent<Image>();
-        Cursor.visible = false;
     }
     void Update()
     {

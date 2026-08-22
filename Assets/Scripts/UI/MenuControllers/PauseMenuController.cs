@@ -1,11 +1,19 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PauseMenuController : MonoBehaviour
 {
+    public static PauseMenuController Instance{get;private set;}
     [SerializeField] GameObject pausePanel;
+    [SerializeField] private GameObject firstButton;
     [SerializeField] bool isEscapeOn = false;
+    public static event Action<GameObject> OnFirstButtonChanged;
 
+    void Awake()
+    {
+        Instance = this;
+    }
     void OnEnable()
     {
         InputManager.OnPause += PauseInputs;
@@ -28,6 +36,7 @@ public class PauseMenuController : MonoBehaviour
             isEscapeOn = !isEscapeOn;
 
             SetPanelAvailable();
+            MenuHelper.Instance.SetCursorForMenu();
         }
     }
 
@@ -44,6 +53,7 @@ public class PauseMenuController : MonoBehaviour
                 pausePanel.SetActive(true);
                 InputManager.Instance.SwitchToMenuMap();
                 Time.timeScale = 0f;
+                OnFirstButtonChanged?.Invoke(firstButton);
             }
             else
             {
@@ -51,5 +61,10 @@ public class PauseMenuController : MonoBehaviour
                 InputManager.Instance.SwitchToPlayerMap();
                 Time.timeScale = 1f;
             }
+    }
+
+    public GameObject PauseFirstButton()
+    {
+        return firstButton;
     }
 }

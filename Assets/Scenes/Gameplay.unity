@@ -5116,7 +5116,7 @@ MonoBehaviour:
   playerSprintSpeed: 13
   groundDrag: 0
   rotationSpeed: 10
-  aimGamepadTurnSensitivity: 150
+  aimGamepadTurnSensitivity: 100
   aimMouseTurnSensitivity: 15
 --- !u!114 &411888674
 MonoBehaviour:
@@ -5440,6 +5440,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PauseMenuController
   pausePanel: {fileID: 1870506912}
+  firstButton: {fileID: 1523865131}
   isEscapeOn: 0
 --- !u!4 &475516280
 Transform:

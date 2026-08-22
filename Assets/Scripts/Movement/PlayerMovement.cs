@@ -29,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
     {
         playerRigidbody = GetComponent<Rigidbody>();
         playerRigidbody.freezeRotation = true;
+        activeDevice = InputManager.CurrentActiveDevice;
     }
     void Update()
     {

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +9,12 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private GameObject mapSelectPanel;
     [SerializeField] private GameObject envanterPanel;
     [SerializeField] private GameObject settingsPanel;
+    [SerializeField] private GameObject mainMenuFirstButton;
+    [SerializeField] private GameObject mapSelectFirstButton;
+    [SerializeField] private GameObject envanterFirstButton;
+    [SerializeField] private GameObject settingsFirstButton;
+    public static event Action<GameObject> OnFirstButtonChanged;
+
 
     void Awake()
     {
@@ -17,29 +24,31 @@ public class MainMenuController : MonoBehaviour
         }
         MainMenuPanel();
     }
-    public void ShowPanel(GameObject panelToShow)
+    public void ShowPanel(GameObject panelToShow , GameObject firstButton)
     {
         foreach(GameObject panel in panels)
         {
             panel.SetActive(panel == panelToShow);
         }
+        Debug.Log("OnFirstButtonChanged tetiklendi, buton: " + (firstButton != null ? firstButton.name : "NULL"));
+        OnFirstButtonChanged?.Invoke(firstButton);
     }
 
     public void MapSelectPanel()
     {
-        ShowPanel(mapSelectPanel);
+        ShowPanel(mapSelectPanel , mapSelectFirstButton);
     }
     public void EnvanterPanel()
     {
-        ShowPanel(envanterPanel);
+        ShowPanel(envanterPanel, envanterFirstButton);
     }
     public void MainMenuPanel()
     {
-        ShowPanel(mainMenuPanel);
+        ShowPanel(mainMenuPanel , mainMenuFirstButton);
     }
     public void SettingsPanel()
     {
-        ShowPanel(settingsPanel);
+        ShowPanel(settingsPanel , settingsFirstButton);
     }
 
     public void LoadMap(string sceneName)
@@ -47,6 +56,15 @@ public class MainMenuController : MonoBehaviour
         SceneManager.LoadScene(sceneName);
         InputManager.Instance.SwitchToPlayerMap();
         
+    }
+
+    public void QuitGame()
+    {
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #else
+        Application.Quit();
+        #endif
     }
 
 
