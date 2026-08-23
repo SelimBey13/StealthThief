@@ -105,6 +105,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ValuableInteractable
   interactableData: {fileID: 11400000, guid: 8fcc9bb37ce1c5e4ba558ae3893b08d0, type: 2}
+  iconTransform: {fileID: 8963637341440938041}
   valuableLevel: 1
   value: 25000
 --- !u!65 &7775758531338776091
@@ -128,3 +129,8 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.9999998, y: 2.4652212, z: 1.9999998}
   m_Center: {x: 0, y: -0.37860823, z: 0}
+--- !u!4 &8963637341440938041 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 05224ec7e4d85c14dbf345dd08810e67, type: 3}
+  m_PrefabInstance: {fileID: 8930503743737100242}
+  m_PrefabAsset: {fileID: 0}

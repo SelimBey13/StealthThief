@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 841136859ae2e93408e00ecf75cee0d9, type: 3}
-  m_Name: HouseDoor
+  m_Name: LeftRoomDoor
   m_EditorClassIdentifier: Assembly-CSharp::InteractableItemData
-  interactableType: 0
-  interactableName: HouseDoor
-  interactionIcon: {fileID: 0}
-  interactablePrefab: {fileID: 355437154287000596, guid: 568a161c45f539d45a9b66de95880097, type: 3}
+  interactableType: 2
+  interactableName: 
+  keyboardIcon: {fileID: -1569355150, guid: 069a00c4a21d8654bbe27600f3ba7103, type: 3}
+  gamepadIcon: {fileID: -725581648, guid: 069a00c4a21d8654bbe27600f3ba7103, type: 3}

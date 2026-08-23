@@ -1,10 +1,13 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 [CreateAssetMenu]
 public class InteractableData : ScriptableObject
 {
     [SerializeField] InteractableType interactableType;
     [SerializeField] string interactableName;
-    [SerializeField] Image interactionIcon;
+    [SerializeField] private Sprite keyboardIcon;
+    [SerializeField] private Sprite gamepadIcon;
+
+    public Sprite KeyboardIcon => keyboardIcon;
+    public Sprite GamepadIcon => gamepadIcon;
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -11,13 +12,15 @@ public class PlayerInteract : MonoBehaviour
     float nearestDistance = Mathf.Infinity;
     Vector3 directionWith;
     Vector3 cameraDirectionForward;
-
+    public static event Action<Interactable> OnNearestInteractable;
     private Coroutine coroutine;
     bool aktifMi = true;
+    Interactable foundInteractable;
 
     void Start()
     {
         coroutine = StartCoroutine(Listeleyici());
+        nearestInteractable = null;
     }
 
     void OnEnable()
@@ -42,38 +45,36 @@ public class PlayerInteract : MonoBehaviour
     }
 
     void ListTheInteractables()
+{
+    colliderList = Physics.OverlapSphere(transform.position, interactRadius, interactableLayer);
+    cameraDirectionForward = new Vector3(Camera.main.transform.forward.x, 0f, Camera.main.transform.forward.z);
+
+    nearestDistance = Mathf.Infinity;
+    foundInteractable = null;
+
+    foreach(Collider collider in colliderList)
     {
-        colliderList = Physics.OverlapSphere(transform.position,interactRadius,interactableLayer);
-        cameraDirectionForward = new Vector3(Camera.main.transform.forward.x,0f,Camera.main.transform.forward.z);
-        Debug.Log("Bulunan: " + colliderList.Length);
-
-        nearestDistance = Mathf.Infinity;
-        nearestInteractable = null;
-
-
-        foreach(Collider collider in colliderList)
+        Interactable interactable = collider.GetComponent<Interactable>();
+        if(interactable != null)
         {
-            Interactable interactable = collider.GetComponent<Interactable>();
-            Debug.Log("Interactable bulundu mu: " + (interactable != null));
-            
-            if(interactable !=null)
+            float temp = Vector3.Distance(transform.position, interactable.transform.position);
+            directionWith = (interactable.transform.position - transform.position).normalized;
+            float onForward = Vector3.Dot(cameraDirectionForward, directionWith);
+
+            if((temp < nearestDistance) && onForward >= 0.2f)
             {
-                float temp = Vector3.Distance(transform.position,interactable.transform.position);
-                directionWith = (interactable.transform.position-transform.position).normalized;
-                float onForward = Vector3.Dot(cameraDirectionForward , directionWith);
-
-                if((temp < nearestDistance) && onForward >=0.2f)
-                {
-                    nearestDistance = temp;
-                    nearestInteractable = interactable;
-                }
+                nearestDistance = temp;
+                foundInteractable = interactable;
             }
-        }   
-
-
-
+        }
     }
 
+    if(foundInteractable != nearestInteractable)
+    {
+        nearestInteractable = foundInteractable;
+        OnNearestInteractable?.Invoke(nearestInteractable);
+    }
+}
     void InteractInputs(bool value)
     {
         if(value && nearestInteractable != null)

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 841136859ae2e93408e00ecf75cee0d9, type: 3}
-  m_Name: Valuable
+  m_Name: LeftHouseDoor
   m_EditorClassIdentifier: Assembly-CSharp::InteractableItemData
-  interactableType: 5
-  interactableName: Valuable
+  interactableType: 0
+  interactableName: HouseDoor
   keyboardIcon: {fileID: -1569355150, guid: 069a00c4a21d8654bbe27600f3ba7103, type: 3}
-  gamepadIcon: {fileID: -725581648, guid: 069a00c4a21d8654bbe27600f3ba7103, type: 3}
+  gamepadIcon: {fileID: 0}

@@ -134,5 +134,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ValuableInteractable
   interactableData: {fileID: 11400000, guid: 8fcc9bb37ce1c5e4ba558ae3893b08d0, type: 2}
+  iconTransform: {fileID: 9194007299222736981}
   valuableLevel: 1
   value: 65000
+--- !u!4 &9194007299222736981 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 919a6da4fce79124e90f9a3381d4266f, type: 3}
+  m_PrefabInstance: {fileID: 8655097768206432190}
+  m_PrefabAsset: {fileID: 0}

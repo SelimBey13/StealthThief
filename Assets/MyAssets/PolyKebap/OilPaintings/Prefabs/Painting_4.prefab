@@ -91,6 +91,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 8522948357409903185}
   m_SourcePrefab: {fileID: 100100000, guid: 9fda4c165a1dff64985a56f26ecf9cee, type: 3}
+--- !u!4 &209749254475789576 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9fda4c165a1dff64985a56f26ecf9cee, type: 3}
+  m_PrefabInstance: {fileID: 388317444614378211}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &694395990687281074 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9fda4c165a1dff64985a56f26ecf9cee, type: 3}
@@ -130,5 +135,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ValuableInteractable
   interactableData: {fileID: 11400000, guid: 8fcc9bb37ce1c5e4ba558ae3893b08d0, type: 2}
+  iconTransform: {fileID: 209749254475789576}
   valuableLevel: 1
   value: 50000

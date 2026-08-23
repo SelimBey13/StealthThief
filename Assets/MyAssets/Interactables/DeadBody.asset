@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 841136859ae2e93408e00ecf75cee0d9, type: 3}
   m_Name: DeadBody
   m_EditorClassIdentifier: Assembly-CSharp::InteractableData
-  itemType: 6
-  itemName: DeadBody
-  itemPrefab: {fileID: 0}
+  interactableType: 6
+  interactableName: 
+  keyboardIcon: {fileID: 0}
+  gamepadIcon: {fileID: 0}
+  iconTransform: {fileID: 0}
