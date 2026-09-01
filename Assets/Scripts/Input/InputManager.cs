@@ -17,6 +17,8 @@ public class InputManager : MonoBehaviour
     public static event Action<bool> OnPause;
     public static event Action<Vector2> OnMouseLook;
     public static event Action<Vector2> OnGamepadLook;
+    public static event Action<string> OnMouseInventory;
+    public static event Action<string> OnGamepadInventory;
     public static ActiveDevice CurrentActiveDevice { get; private set; } = ActiveDevice.Mouse;
     public static event Action<ActiveDevice> OnActiveDeviceChanged;// UI Degisim kısmında kullanılacak
     public bool IsMenuMapActive{get; private set;}
@@ -62,6 +64,8 @@ public class InputManager : MonoBehaviour
 
         inputActions.Player.Pause.performed += PausePerformed;
         inputActions.Player.Pause.canceled += PauseCanceled;
+
+        inputActions.Player.WeaponInventory.performed += InventoryPerformed;
 
         inputActions.Menu.Pause.performed += PausePerformed;
         inputActions.Menu.Pause.canceled += PauseCanceled;
@@ -112,6 +116,8 @@ public class InputManager : MonoBehaviour
         
         inputActions.Player.Pause.performed -= PausePerformed;
         inputActions.Player.Pause.canceled -= PauseCanceled;
+
+        inputActions.Player.WeaponInventory.performed -= InventoryPerformed;
 
         inputActions.Menu.Pause.performed -= PausePerformed;
         inputActions.Menu.Pause.canceled -= PauseCanceled;
@@ -321,9 +327,30 @@ public class InputManager : MonoBehaviour
     }
     #endregion
 
+    #region ActiveDeviceMenu
     void ActiveDeviceForMenu(InputAction.CallbackContext ctx)
     {
         if(ctx.control == null) return;
         UpdateActiveDevice(ctx.control.device);
     }
+    #endregion
+    
+    #region Inventory
+
+    void InventoryPerformed(InputAction.CallbackContext ctx)
+    {
+        UpdateActiveDevice(ctx.control.device);
+        string keyName = ctx.control.name;
+
+        if(CurrentActiveDevice == ActiveDevice.Mouse && ctx.control.device is Keyboard)
+        {
+            OnMouseInventory?.Invoke(keyName);
+        }
+        else if(CurrentActiveDevice == ActiveDevice.Gamepad && ctx.control.device is Gamepad)
+        {
+            OnGamepadInventory?.Invoke(keyName);
+        }
+    }
+
+    #endregion
 }

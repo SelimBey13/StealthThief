@@ -39,7 +39,7 @@ public class IKController : MonoBehaviour
 
             anim.SetLookAtWeight(
                 weight: 1f,      // genel etki
-                bodyWeight: 0.3f, // GÖVDENİN ne kadar döneceği
+                bodyWeight: 0.5f, // GÖVDENİN ne kadar döneceği
                 headWeight: 0.6f, // KAFANIN ne kadar döneceği
                 eyesWeight: 0.5f,  // gözlerin ne kadar döneceği
                 clampWeight: 0.5f  // aşırı bükülmeyi sınırlama
