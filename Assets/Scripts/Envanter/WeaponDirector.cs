@@ -3,22 +3,41 @@ using UnityEngine;
 
 public class WeaponDirector : MonoBehaviour
 {
+    public static WeaponDirector Instance{get; private set;}
     public bool weaponSelected{get; private set;}
     public string currentInventoryKey{get; private set;}
     private int index;
+    public int Index => index;
     private WeaponData[] selectedEnvanter;
     private WeaponData currentWeapon;
+    [SerializeField] private Transform pistolHandTransorm;
+    [SerializeField] private Transform pistolFreeTransform;
+    [SerializeField] private Transform knifeHandTransorm;
+    [SerializeField] private Transform knifeFreeTransform;
+    private WeaponData gamePistolData;
+    private WeaponData gameKnifeData;
+    GameObject gamePistol;
+    GameObject gameKnife;
 
 
 
     void Awake()
     {
         weaponSelected = false;
+        Instance = this;
     }
 
     void Start()
     {
         selectedEnvanter =  EnvanterManager.Instance.Envanter;
+        gamePistolData = selectedEnvanter[0];
+        gameKnifeData = selectedEnvanter[1];
+        gamePistol = Instantiate(gamePistolData.WeaponPrefab,pistolFreeTransform);
+        gameKnife = Instantiate(gameKnifeData.WeaponPrefab,knifeFreeTransform);
+
+        gamePistol.SetActive(true);
+        gameKnife.SetActive(true);
+
     }
     void OnEnable()
     {
@@ -52,6 +71,7 @@ public class WeaponDirector : MonoBehaviour
                 else if(currentInventoryKey == key)
                 {
                     weaponSelected = false;
+                    currentInventoryKey = null;
                 }    
         }
         else if(InputManager.CurrentActiveDevice == ActiveDevice.Gamepad)
@@ -87,6 +107,44 @@ public class WeaponDirector : MonoBehaviour
         {
             currentWeapon = selectedEnvanter[index];
         }
+        else
+        {
+            currentWeapon = null;
+        }
+
+        SetWeaponVisual();
     }
 
+    void SetWeaponVisual()
+    {
+        if(currentWeapon == null)
+        {
+            gameKnife.transform.SetParent(knifeFreeTransform);
+            ResetTransform(gameKnife);
+            gamePistol.transform.SetParent(pistolFreeTransform);
+            ResetTransform(gamePistol);
+            return;
+        }
+
+        if(currentWeapon == gamePistolData)
+        {
+            gameKnife.transform.SetParent(knifeFreeTransform);
+            ResetTransform(gameKnife);
+            gamePistol.transform.SetParent(pistolHandTransorm);
+            ResetTransform(gamePistol);
+        }
+        else if(currentWeapon == gameKnifeData)
+        {
+            gamePistol.transform.SetParent(pistolFreeTransform);
+            ResetTransform(gamePistol);
+            gameKnife.transform.SetParent(knifeHandTransorm);
+            ResetTransform(gameKnife);
+        }
+    }
+
+    void ResetTransform(GameObject obj)
+    {
+        obj.transform.localPosition = Vector3.zero;
+        obj.transform.localRotation = Quaternion.identity;
+    }
 }

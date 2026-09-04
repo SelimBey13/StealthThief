@@ -111,13 +111,25 @@ public class PlayerStateManager : MonoBehaviour
     }
     void AimInputs(bool value)
     {
-        if (value && CurrentMainState == PlayerMainStates.Sprint)
+        if(WeaponDirector.Instance.Index == 0 && WeaponDirector.Instance.weaponSelected && value)
         {
-            SprintLocked = false;
-            IsMouseSprinting = false;
-            UpdateMainStates();
+            IsAiming = value;
+            InputManager.Instance.DisableWeaponInventory();
+
+            if (CurrentMainState == PlayerMainStates.Sprint)
+            {
+                SprintLocked = false;
+                IsMouseSprinting = false;
+                 UpdateMainStates();
+            }
+
         }
-        IsAiming = value;
+        else
+        {
+            IsAiming = false;
+            InputManager.Instance.EnableWeaponInventory();
+        }
+    
     }
     void FireInputs(bool value)
     {

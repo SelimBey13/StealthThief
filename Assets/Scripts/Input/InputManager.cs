@@ -353,4 +353,13 @@ public class InputManager : MonoBehaviour
     }
 
     #endregion
+
+    public void DisableWeaponInventory()
+    {
+        inputActions.Player.WeaponInventory.Disable();
+    }
+    public void EnableWeaponInventory()
+    {
+        inputActions.Player.WeaponInventory.Enable();
+    }
 }

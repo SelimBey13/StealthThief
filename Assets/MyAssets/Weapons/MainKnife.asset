@@ -15,4 +15,4 @@ MonoBehaviour:
   weaponType: 1
   weaponName: Knife
   weaponDamage: 50
-  weaponPrefab: {fileID: 0}
+  weaponPrefab: {fileID: 5950430615628131268, guid: 80621c5ee2e3c3640838bb83ea63c99f, type: 3}

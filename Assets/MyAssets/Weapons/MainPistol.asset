@@ -15,4 +15,4 @@ MonoBehaviour:
   weaponType: 0
   weaponName: Pistol
   weaponDamage: 100
-  weaponPrefab: {fileID: 0}
+  weaponPrefab: {fileID: 7173815278906741782, guid: e7461e3cb4dfd384ea54841be167ca84, type: 3}

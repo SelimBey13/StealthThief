@@ -136,18 +136,18 @@ public class PlayerMovement : MonoBehaviour
     void AimInputs(bool value)
     {
         isAiming = value;
-        if (value)
-    {
-        playerVisualTransform.forward = cameraDirectionForward;
-    }
+        if (value && WeaponDirector.Instance.Index == 0 && WeaponDirector.Instance.weaponSelected)
+        {
+            playerVisualTransform.forward = cameraDirectionForward;
+        }
     }
     void MouseLookInputs(Vector2 mouseLookInput)
     {
-        this.generalLookInput = mouseLookInput;
+        generalLookInput = mouseLookInput;
     }
     void GamepadLookInputs(Vector2 gamepadLookInput)
     {
-        this.generalLookInput = gamepadLookInput;
+        generalLookInput = gamepadLookInput;
     }
     void ActiveDeviceInfo(ActiveDevice activeDevice)
     {
