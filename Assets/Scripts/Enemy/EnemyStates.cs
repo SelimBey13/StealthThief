@@ -2,7 +2,7 @@ public enum EnemyStates
 {
     Idle,
     Patrol,
-    Suspicious,
+    Search,
     Alert,
     Shoot
 
