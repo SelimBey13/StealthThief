@@ -9,6 +9,7 @@ public class EnemyVision : MonoBehaviour
     [SerializeField] private float sphereRadius;
     public float SphereRadius=>sphereRadius;
     [SerializeField] Transform[] playerBodyParts;
+    float playerBodyPartNumber;
     [SerializeField] private float enemyHeight;
     [SerializeField] Transform enemyEyeTransform;
     [SerializeField] private LayerMask obstacleLayer;
@@ -21,30 +22,38 @@ public class EnemyVision : MonoBehaviour
     bool isPlayerEscaped;
     bool isPlayerInside;
     int seenBodyParts;
-    float seeingRate = 0.7f;
+    float seeingRate;
+    float baseSeeingRate;
     bool isCurrentlySeeing = false;
     Coroutine seeingCoroutine;
     Coroutine escapingCoroutine;
+    EnemyVoice enemyVoice;
     public event Action OnEnemyAlert;
     public event Action OnEnemyShootPlayer;
     public event Action<Vector3> OnEnemyEscaped;
+    private float voiceLevel;
 
     void Awake()
     {
         enemy = GetComponent<Enemy>();
+        enemyVoice = GetComponent<EnemyVoice>();
     }
     void Start()
     {
         isPlayerEscaped = false;
+        playerBodyPartNumber = playerBodyParts.Length;
+        baseSeeingRate = 0.7f; 
     }
 
     void OnEnable()
     {
         enemy.OnDistanceChanged += DistanceWithPlayer;
+        enemyVoice.OnVoiceLevelChanged += ReceiveVoiceLevel;
     }
     void OnDisable()
     {
         enemy.OnDistanceChanged -= DistanceWithPlayer;
+        enemyVoice.OnVoiceLevelChanged -= ReceiveVoiceLevel;
     }
     void DistanceWithPlayer(float value)
     {
@@ -59,8 +68,11 @@ public class EnemyVision : MonoBehaviour
         WhereIsPlayer();
         IsPlayerInSphere();
         CanSeeAllParts();
+        SetSeeingRate();
 
-        if(isPlayerInside && (seenBodyParts>= playerBodyParts.Length*seeingRate))
+    //Debug.Log($"isPlayerInside: {isPlayerInside}, seenBodyParts: {seenBodyParts}, gereken: {playerBodyPartNumber*seeingRate}, dotProduct: {dotProduct}");
+
+        if(isPlayerInside && (seenBodyParts>= playerBodyPartNumber*seeingRate))
         {
             if(isCurrentlySeeing == false)
             {
@@ -71,7 +83,11 @@ public class EnemyVision : MonoBehaviour
         else
         {
             isCurrentlySeeing = false;
-            StopCoroutine(seeingCoroutine);
+            if(seeingCoroutine !=null)
+            {
+               StopCoroutine(seeingCoroutine); 
+            }
+            
         }
 
     }
@@ -139,11 +155,10 @@ public class EnemyVision : MonoBehaviour
         if(isCurrentlySeeing)
         {
             OnEnemyAlert?.Invoke(); 
-            SpecifyLastLocation();
         }
     }
 
-    void SpecifyLastLocation()
+    public void SpecifyLastLocation()
     {
         escapingCoroutine = StartCoroutine(CheckIfEscaped());
     }
@@ -176,5 +191,14 @@ public class EnemyVision : MonoBehaviour
 
     }
 
+    void ReceiveVoiceLevel(float value)
+    {
+        voiceLevel = value;
+    }
+
+    void SetSeeingRate()
+    {
+        seeingRate = baseSeeingRate - 0.7f*voiceLevel/100f;
+    }
 }
 

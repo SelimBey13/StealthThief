@@ -7,7 +7,7 @@ public class EnemyVoice : MonoBehaviour
     Enemy enemy;
     EnemyStateManager enemyStateManager;
     float hearingRadius;
-    float voiceLevel; // 0-100
+    [SerializeField] float voiceLevel; // 0-100
     float distance;
     float distanceRate;
     float sourceVoice;
@@ -34,15 +34,18 @@ public class EnemyVoice : MonoBehaviour
     void OnEnable()
     {
         enemy.OnDistanceChanged += SetDistanceToPlayer;
+        SourceSoundManager.OnSourceVoiceChanged += SetSourceVoice;
     }
     void OnDisable()
     {
         enemy.OnDistanceChanged -= SetDistanceToPlayer;
+        SourceSoundManager.OnSourceVoiceChanged -= SetSourceVoice;
     }
 
     void SetVoiceLevel()
     {
         voiceLevel = sourceVoice * (1 - distance/hearingRadius);
+        voiceLevel = Mathf.Clamp(voiceLevel,0f,100f);
         OnVoiceLevelChanged?.Invoke(voiceLevel);
     }
 

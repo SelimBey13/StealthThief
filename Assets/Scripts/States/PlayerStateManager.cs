@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerStateManager : MonoBehaviour
@@ -23,6 +24,10 @@ public class PlayerStateManager : MonoBehaviour
     private Vector2 currentMoveInput;
     public bool SprintLocked {get; private set;}
     public bool CrouchLocked {get; private set;}
+
+    public static event Action<PlayerMainStates> OnStateChanged;
+    public static event Action<bool> OnCrouch;
+    public static event Action<bool> OnFire;
 
     void Awake()
     {
@@ -82,14 +87,17 @@ public class PlayerStateManager : MonoBehaviour
             if(currentMoveInput == Vector2.zero)
             {
                 CurrentMainState = PlayerMainStates.Idle;
+                OnStateChanged?.Invoke(PlayerMainStates.Idle);
             }
             else if(SprintLocked && !CrouchLocked)
             {
                 CurrentMainState = PlayerMainStates.Sprint;
+                OnStateChanged?.Invoke(PlayerMainStates.Sprint);
             }
             else
             {
                 CurrentMainState = PlayerMainStates.Walk;
+                OnStateChanged?.Invoke(PlayerMainStates.Walk);
             }  
             }
         else if(InputManager.CurrentActiveDevice == ActiveDevice.Mouse)
@@ -97,14 +105,17 @@ public class PlayerStateManager : MonoBehaviour
             if(currentMoveInput == Vector2.zero)
             {
                 CurrentMainState = PlayerMainStates.Idle;
+                OnStateChanged?.Invoke(PlayerMainStates.Idle);
             }
             else if(IsMouseSprinting && !IsMouseCrouching)
             {
                 CurrentMainState = PlayerMainStates.Sprint;
+                OnStateChanged?.Invoke(PlayerMainStates.Sprint);
             }
             else
             {
                 CurrentMainState = PlayerMainStates.Walk;
+                OnStateChanged?.Invoke(PlayerMainStates.Walk);
             } 
         }
         
@@ -134,6 +145,8 @@ public class PlayerStateManager : MonoBehaviour
     void FireInputs(bool value)
     {
         IsFiring = value;
+        OnFire?.Invoke(value);
+        OnStateChanged?.Invoke(CurrentMainState);
     }
     void InteractInputs(bool value)
     {
@@ -142,6 +155,8 @@ public class PlayerStateManager : MonoBehaviour
     void MouseCrouchInputs(bool value)
     {
         IsMouseCrouching = value;
+        OnCrouch?.Invoke(value);
+        OnStateChanged?.Invoke(CurrentMainState);
 
     }
     void GamepadCrouchInputs(bool value)
@@ -152,7 +167,9 @@ public class PlayerStateManager : MonoBehaviour
         {
             SprintLocked = false;
             CrouchLocked = !CrouchLocked;
+            OnCrouch?.Invoke(CrouchLocked);
             UpdateMainStates();  
+            OnStateChanged?.Invoke(CurrentMainState);
         }
 
     }

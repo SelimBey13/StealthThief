@@ -21,7 +21,7 @@ public class EnemyManager : MonoBehaviour
 
     void loadToListAndInstantiate()
     {
-        for(int i=0; i<5; i++) // 5 -> SceneManager.Instance.CurrentScene.enemyCount
+        for(int i=0; i<1; i++) // 5 -> SceneManager.Instance.CurrentScene.enemyCount
         {
             int rand = 0;
             GameObject enemyLive;
