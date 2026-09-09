@@ -17,7 +17,6 @@ public class EnemyMovement : MonoBehaviour
     bool isArrived;
     bool isSearching;
     bool isAlert;
-    Vector3 playerLastPosition;
     Coroutine loopCoroutine;
     Coroutine searchCoroutine;
     public event Action OnArrivedSearchPoint;
@@ -43,8 +42,6 @@ public class EnemyMovement : MonoBehaviour
         enemy.OnEnemyStateChanged += IsPatrolControl;
         enemy.OnEnemyStateChanged += IsSearchingControl;
         enemy.OnEnemyStateChanged += IsAlertControl;
-        enemyVision.OnEnemyEscaped += SetLastPlayerTransform;
-        enemyVoice.OnHeardSomething += SetLastPlayerTransform;
     }
 
     void OnDisable()
@@ -53,8 +50,6 @@ public class EnemyMovement : MonoBehaviour
         enemy.OnEnemyStateChanged -= IsPatrolControl;
         enemy.OnEnemyStateChanged -= IsSearchingControl;
         enemy.OnEnemyStateChanged -= IsAlertControl;
-        enemyVision.OnEnemyEscaped -= SetLastPlayerTransform;
-        enemyVoice.OnHeardSomething -= SetLastPlayerTransform;
     }
 
     void IsArrived()
@@ -129,7 +124,7 @@ public class EnemyMovement : MonoBehaviour
         {
             if(loopCoroutine != null) { StopCoroutine(loopCoroutine); }
             navMeshAgent.ResetPath();
-            navMeshAgent.SetDestination(playerLastPosition);  
+            navMeshAgent.SetDestination(enemy.PlayerLastLocation);  
             searchCoroutine = StartCoroutine(SearchLoop());
         }
     }
@@ -151,11 +146,6 @@ public class EnemyMovement : MonoBehaviour
     void GoStartingPatrolLocationFirstTime()
     {
         navMeshAgent.SetDestination(patrolTransform[0].position);
-    }
-
-    void SetLastPlayerTransform(Vector3 position)
-    {
-        playerLastPosition = position;
     }
 
     public void SetPatrolLocations(Transform[] transforms)

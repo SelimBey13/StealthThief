@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     EnemyMovement enemyMovement;
     [SerializeField] private float moveTime;
     Vector3 playerLastLocation;
+    public Vector3 PlayerLastLocation => playerLastLocation;
     [SerializeField] private Transform playerTransform;
     public event Action OnPlayerShot;
     public event Action<float> OnDistanceChanged;
