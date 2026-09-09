@@ -39,7 +39,9 @@ public class EnemyVision : MonoBehaviour
         enemyVoice = GetComponent<EnemyVoice>();
     }
     void Start()
-    {
+    {   
+        playerTransform = EnemyPlayerReferences.Instance.playerTransform;
+        playerBodyParts = EnemyPlayerReferences.Instance.playerBodyTransforms;
         isPlayerEscaped = false;
         playerBodyPartNumber = playerBodyParts.Length;
         baseSeeingRate = 0.7f; 
@@ -172,7 +174,7 @@ public class EnemyVision : MonoBehaviour
         {
             yield return waitTime;
             time += 0.1f;
-            if(isPlayerInside)
+            if(isPlayerInside && seenBodyParts>playerBodyPartNumber/2)
             {
                 isPlayerEscaped = false;
                 lastPlayerLocation = playerTransform.position;

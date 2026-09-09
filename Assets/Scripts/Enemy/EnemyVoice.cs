@@ -28,6 +28,7 @@ public class EnemyVoice : MonoBehaviour
 
     void Start()
     {
+        playerTransform = PlayerStateManager.Instance.transform;
         hearingRadius = enemyVision.SphereRadius * 0.8f;
     }
 

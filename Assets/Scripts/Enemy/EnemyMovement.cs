@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using UnityEditor.Analytics;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -157,5 +156,10 @@ public class EnemyMovement : MonoBehaviour
     void SetLastPlayerTransform(Vector3 position)
     {
         playerLastPosition = position;
+    }
+
+    public void SetPatrolLocations(Transform[] transforms)
+    {
+        patrolTransform = transforms;
     }
 }

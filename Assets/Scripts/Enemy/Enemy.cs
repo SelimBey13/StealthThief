@@ -43,9 +43,11 @@ public class Enemy : MonoBehaviour
         enemyMovement.OnArrivedSearchPoint -= NothingAroundSearchPoint;
     }
     void Start()
-    {
+    {   
+        playerTransform = EnemyPlayerReferences.Instance.playerTransform;
         StartCoroutine(WaitForStart(moveTime));
         StartCoroutine(DistanceWithPlayer());
+        
     }
 
     IEnumerator DistanceWithPlayer()
@@ -93,6 +95,11 @@ public class Enemy : MonoBehaviour
     {
         enemyStateManager.SetEnemyState(EnemyStates.Patrol);
         OnEnemyStateChanged?.Invoke(EnemyStates.Patrol);
+    }
+
+    public void SetPatrolTransforms(Transform[] transforms)
+    {
+        enemyMovement.SetPatrolLocations(transforms);
     }
 
 }

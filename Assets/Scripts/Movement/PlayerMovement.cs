@@ -31,6 +31,11 @@ public class PlayerMovement : MonoBehaviour
         playerRigidbody.freezeRotation = true;
         activeDevice = InputManager.CurrentActiveDevice;
     }
+
+    void Start()
+    {
+        playerRigidbody.linearDamping = groundDrag;
+    }
     void Update()
     {
         SetCameraDirection();
