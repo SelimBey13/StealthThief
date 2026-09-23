@@ -51,11 +51,13 @@ public class EnemyVision : MonoBehaviour
     {
         enemy.OnDistanceChanged += DistanceWithPlayer;
         enemyVoice.OnVoiceLevelChanged += ReceiveVoiceLevel;
+        enemy.OnAllCoroutinesMustStop += ResetEnemy;
     }
     void OnDisable()
     {
         enemy.OnDistanceChanged -= DistanceWithPlayer;
         enemyVoice.OnVoiceLevelChanged -= ReceiveVoiceLevel;
+        enemy.OnAllCoroutinesMustStop -= ResetEnemy;
     }
     void DistanceWithPlayer(float value)
     {
@@ -201,6 +203,15 @@ public class EnemyVision : MonoBehaviour
     void SetSeeingRate()
     {
         seeingRate = baseSeeingRate - 0.7f*voiceLevel/100f;
+    }
+
+    void ResetEnemy()
+    {
+        StopAllCoroutines();
+        isCurrentlySeeing = false;
+        isPlayerEscaped = false;
+        isPlayerInside = false;
+
     }
 }
 

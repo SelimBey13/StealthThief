@@ -491,6 +491,7 @@ GameObject:
   - component: {fileID: 1884420810831428714}
   - component: {fileID: 2905965939554668500}
   - component: {fileID: 609435953932569869}
+  - component: {fileID: 2147517333598984337}
   m_Layer: 0
   m_Name: dusman
   m_TagString: Untagged
@@ -564,6 +565,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   moveTime: 3
   playerTransform: {fileID: 0}
+  playerShooting: {fileID: 0}
 --- !u!114 &5825949503611503796
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -643,6 +645,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  enemySpeed: 0.8
+  enemySearchSpeed: 1.5
 --- !u!195 &609435953932569869
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -665,6 +669,29 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!136 &2147517333598984337
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2867053233777611830}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.08732414
+  m_Height: 1.7898779
+  m_Direction: 1
+  m_Center: {x: -0.001001358, y: 0.90760446, z: 0}
 --- !u!1 &2872034314137565222
 GameObject:
   m_ObjectHideFlags: 0

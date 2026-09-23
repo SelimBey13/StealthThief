@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -16,6 +17,11 @@ public class Enemy : MonoBehaviour
     public event Action<float> OnDistanceChanged;
     public event Action OnFirstTimePatrol;
     public event Action<EnemyStates> OnEnemyStateChanged;
+    public event Action OnAllCoroutinesMustStop;
+    [SerializeField] PlayerShooting playerShooting;
+    bool isAlive;
+    bool isCleanable;
+
 
     void Awake()
     {
@@ -23,6 +29,7 @@ public class Enemy : MonoBehaviour
         enemyVision = GetComponent<EnemyVision>();
         enemyVoice = GetComponent<EnemyVoice>();
         enemyMovement = GetComponent<EnemyMovement>();
+        playerShooting = EnemyPlayerReferences.Instance.playerShooting;
     }
 
     void OnEnable()
@@ -33,6 +40,7 @@ public class Enemy : MonoBehaviour
         enemyVoice.OnHeardSomething += EnemySearchingPlayer;
         enemyVoice.OnAlert += EnemyAlert;
         enemyMovement.OnArrivedSearchPoint += NothingAroundSearchPoint;
+        playerShooting.OnPlayerShootEnemy += EnemyShot;
     }
     void OnDisable()
     {
@@ -42,9 +50,13 @@ public class Enemy : MonoBehaviour
         enemyVoice.OnHeardSomething -= EnemySearchingPlayer;
         enemyVoice.OnAlert -= EnemyAlert;
         enemyMovement.OnArrivedSearchPoint -= NothingAroundSearchPoint;
+        playerShooting.OnPlayerShootEnemy -= EnemyShot;
     }
     void Start()
     {   
+        
+        isAlive = true;
+        isCleanable = false;
         playerTransform = EnemyPlayerReferences.Instance.playerTransform;
         StartCoroutine(WaitForStart(moveTime));
         StartCoroutine(DistanceWithPlayer());
@@ -101,6 +113,32 @@ public class Enemy : MonoBehaviour
     public void SetPatrolTransforms(Transform[] transforms)
     {
         enemyMovement.SetPatrolLocations(transforms);
+    }
+
+    void Die()
+    {
+        if(!isAlive) {return;}
+
+        enemyStateManager.SetEnemyState(EnemyStates.Dead);
+        OnEnemyStateChanged?.Invoke(EnemyStates.Dead);
+        OnAllCoroutinesMustStop?.Invoke();
+        StopAllCoroutines();
+        isAlive = false;
+
+        Invoke(nameof(SetCleanable),3f); // öldükten 3 saniye sonra ölü bedeni temizleyebilme mekaniği
+    }
+
+    void SetCleanable()
+    {
+        isCleanable = true;
+    }
+
+    void EnemyShot(Enemy enemy)
+    {
+        if(enemy == this)
+        {
+            Die();
+        }
     }
 
 }

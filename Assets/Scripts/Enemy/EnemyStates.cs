@@ -4,6 +4,7 @@ public enum EnemyStates
     Patrol,
     Search,
     Alert,
-    Shoot
+    Shoot,
+    Dead
 
 }

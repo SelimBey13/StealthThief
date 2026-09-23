@@ -4251,6 +4251,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
   enemyPrefab:
   - {fileID: 2867053233777611830, guid: 5dfbb806c37095147ac5ae31e12a9aac, type: 3}
+  playerShooting: {fileID: 411888677}
 --- !u!1 &349869828
 GameObject:
   m_ObjectHideFlags: 0
@@ -5369,6 +5370,7 @@ GameObject:
   - component: {fileID: 411888675}
   - component: {fileID: 411888673}
   - component: {fileID: 411888674}
+  - component: {fileID: 411888677}
   - component: {fileID: 411888671}
   - component: {fileID: 411888670}
   m_Layer: 0
@@ -5512,6 +5514,21 @@ MonoBehaviour:
   interactableLayer:
     serializedVersion: 2
     m_Bits: 128
+--- !u!114 &411888677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 411888669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bbb73a6bc97d994a88aa8515642f046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerShooting
+  crosshairRectTransform: {fileID: 1827326719}
+  mainCamera: {fileID: 330585545}
+  bulletRange: 75
 --- !u!1 &414761990
 GameObject:
   m_ObjectHideFlags: 0
@@ -8379,6 +8396,7 @@ MonoBehaviour:
   - {fileID: 781556477}
   - {fileID: 191402758}
   - {fileID: 1858935649}
+  playerShooting: {fileID: 411888677}
 --- !u!4 &707213945
 Transform:
   m_ObjectHideFlags: 0
@@ -16602,7 +16620,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.06666667
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 5ccd91b5e5dc6f741a183a55fc5bc4dc, type: 2}
   m_BuildHeightMesh: 0

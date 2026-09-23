@@ -6,17 +6,23 @@ public class EnemyManager : MonoBehaviour
     public static EnemyManager Instance{get;private set;}
     [SerializeField] private GameObject[] enemyPrefab;
     List<Enemy> enemies = new List<Enemy>();
-
-    
+    [SerializeField] private PlayerShooting playerShooting;
 
     void Awake()
     {
         Instance = this;
     }
-
     void Start()
     {
         loadToListAndInstantiate();
+    }
+    void OnEnable()
+    {
+        playerShooting.OnPlayerShootEnemy += EnemyShot;
+    }
+    void OnDisable()
+    {
+        playerShooting.OnPlayerShootEnemy -= EnemyShot;
     }
 
     void loadToListAndInstantiate()
@@ -34,5 +40,13 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+    void EnemyShot(Enemy enemy)
+    {
+        if(enemies.Contains(enemy))
+        {
+          enemies.Remove(enemy);  
+        }
+        
+    }
 
 }

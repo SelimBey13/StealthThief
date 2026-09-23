@@ -83,7 +83,4 @@ public class EnemyVoice : MonoBehaviour
         sourceVoice = value;
     }
 
-    
-
-
 }

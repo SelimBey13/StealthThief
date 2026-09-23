@@ -6,11 +6,14 @@ using UnityEngine.AI;
 public class EnemyMovement : MonoBehaviour
 {
     [SerializeField] Transform[] patrolTransform;
+    Transform playerTransform;
     EnemyStateManager enemyStateManager;
     Enemy enemy;
     EnemyVision enemyVision;
     EnemyVoice enemyVoice;
     NavMeshAgent navMeshAgent;
+    [SerializeField] float enemySpeed;
+    [SerializeField] float enemySearchSpeed;
     int currentPatrol;
     int direction;
     bool isPatrol;
@@ -32,8 +35,17 @@ public class EnemyMovement : MonoBehaviour
 
     void Start()
     {
+        playerTransform = EnemyPlayerReferences.Instance.playerTransform;
         currentPatrol = 0;
         direction = 1;
+    }
+
+    void Update()
+    {
+        if(isAlert)
+        {
+            SetVisualToPlayer();
+        }
     }
 
     void OnEnable()
@@ -42,6 +54,7 @@ public class EnemyMovement : MonoBehaviour
         enemy.OnEnemyStateChanged += IsPatrolControl;
         enemy.OnEnemyStateChanged += IsSearchingControl;
         enemy.OnEnemyStateChanged += IsAlertControl;
+        enemy.OnAllCoroutinesMustStop += ResetEnemy;
     }
 
     void OnDisable()
@@ -50,6 +63,7 @@ public class EnemyMovement : MonoBehaviour
         enemy.OnEnemyStateChanged -= IsPatrolControl;
         enemy.OnEnemyStateChanged -= IsSearchingControl;
         enemy.OnEnemyStateChanged -= IsAlertControl;
+        enemy.OnAllCoroutinesMustStop -= ResetEnemy;
     }
 
     void IsArrived()
@@ -78,6 +92,7 @@ public class EnemyMovement : MonoBehaviour
     IEnumerator PatrolLoop()
     {
         WaitForSeconds varisKontrol = new WaitForSeconds(0.2f);
+        navMeshAgent.speed = enemySpeed;
         while(isPatrol)
         {
             yield return varisKontrol;
@@ -88,6 +103,7 @@ public class EnemyMovement : MonoBehaviour
     IEnumerator SearchLoop()
     {
         WaitForSeconds varisKontrol = new WaitForSeconds(0.2f);
+        navMeshAgent.speed = enemySearchSpeed;
         while(isSearching)
         {
             yield return varisKontrol;
@@ -134,6 +150,7 @@ public class EnemyMovement : MonoBehaviour
         isAlert = state == EnemyStates.Alert;
         if(isAlert)
         {
+            SetVisualToPlayer();
             if(loopCoroutine != null) { StopCoroutine(loopCoroutine); }
             if(searchCoroutine != null) { StopCoroutine(searchCoroutine); }
             
@@ -151,5 +168,22 @@ public class EnemyMovement : MonoBehaviour
     public void SetPatrolLocations(Transform[] transforms)
     {
         patrolTransform = transforms;
+    }
+
+    void SetVisualToPlayer()
+    {
+        Vector3 direction = (playerTransform.position - enemy.transform.position).normalized;
+        enemy.transform.forward = direction;
+    }
+
+    void ResetEnemy()
+    {
+        StopAllCoroutines();
+        isPatrol = false;
+        isArrived = false;
+        isSearching = false;
+        isAlert = false;
+        navMeshAgent.ResetPath();
+        navMeshAgent.speed = 0f;
     }
 }
