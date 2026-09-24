@@ -15,8 +15,8 @@ TagManager:
   - SolidArticle
   - Interactable
   - Obstacle
-  - 
-  - 
+  - DeadBody
+  - Player
   - 
   - 
   - 

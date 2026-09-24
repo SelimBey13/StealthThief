@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour
     public event Action OnFirstTimePatrol;
     public event Action<EnemyStates> OnEnemyStateChanged;
     public event Action OnAllCoroutinesMustStop;
+    public event Action<Vector3,Rigidbody> OnRagdollPhysic;
     [SerializeField] PlayerShooting playerShooting;
     bool isAlive;
     bool isCleanable;
@@ -124,6 +125,8 @@ public class Enemy : MonoBehaviour
         OnAllCoroutinesMustStop?.Invoke();
         StopAllCoroutines();
         isAlive = false;
+        OnRagdollPhysic?.Invoke(playerShooting.FireDirection , playerShooting.FiredRigidbody);
+
 
         Invoke(nameof(SetCleanable),3f); // öldükten 3 saniye sonra ölü bedeni temizleyebilme mekaniği
     }

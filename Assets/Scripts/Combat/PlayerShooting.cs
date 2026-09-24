@@ -4,6 +4,9 @@ using UnityEngine;
 public class PlayerShooting : MonoBehaviour
 {
     Vector3 fireDirection;
+    public Vector3 FireDirection => fireDirection;
+    Rigidbody firedRigidbody;
+    public Rigidbody FiredRigidbody => firedRigidbody;
     [SerializeField] RectTransform crosshairRectTransform;
     Vector3 crosshairScreenPosition;
     Vector3 viewportPoint;
@@ -34,8 +37,9 @@ public class PlayerShooting : MonoBehaviour
 
             if(Physics.Raycast(ray, out RaycastHit hit,bulletRange))
             {
-                Debug.Log($"Raycast hit: {hit.collider?.name}");
-                Enemy enemy = hit.collider.GetComponent<Enemy>();
+                Enemy enemy = hit.collider.GetComponentInParent<Enemy>();
+                fireDirection = (hit.transform.position - transform.position).normalized;
+                firedRigidbody = hit.rigidbody;
                 if(enemy != null)
                 {
                     OnPlayerShootEnemy?.Invoke(enemy);
