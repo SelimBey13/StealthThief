@@ -5366,6 +5366,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 411888672}
+  - component: {fileID: 411888678}
   - component: {fileID: 411888676}
   - component: {fileID: 411888675}
   - component: {fileID: 411888673}
@@ -5529,6 +5530,24 @@ MonoBehaviour:
   crosshairRectTransform: {fileID: 1827326719}
   mainCamera: {fileID: 330585545}
   bulletRange: 75
+--- !u!114 &411888678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 411888669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f77fbdbe58dc7aa4a8f5f035800386c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShootingResults
+  playerShooting: {fileID: 411888677}
+  holeDecalPrefab: {fileID: 6854984423024747127, guid: 3c6135881d734a64c8eb871eae70b96b, type: 3}
+  bloodDecalPrefab: {fileID: 854662763440498169, guid: ea6f43ad222a9c747b5a0be0dfd29669, type: 3}
+  maxHole: 5
+  maxBlood: 5
+  particle: {fileID: 2348897159716002062, guid: c8bbb40da66eb824e84719d02f8ae510, type: 3}
 --- !u!1 &414761990
 GameObject:
   m_ObjectHideFlags: 0
@@ -16560,7 +16579,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: e1b7f7fc5d338de428d67376fed592bb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

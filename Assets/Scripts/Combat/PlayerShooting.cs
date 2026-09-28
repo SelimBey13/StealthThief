@@ -14,6 +14,7 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField] Camera mainCamera;
     [SerializeField] private float bulletRange;
     public event Action<Enemy> OnPlayerShootEnemy;
+    public event Action<RaycastHit,Vector3> OnHitInfos;
 
     void Start()
     {
@@ -39,6 +40,7 @@ public class PlayerShooting : MonoBehaviour
             {
                 Enemy enemy = hit.collider.GetComponentInParent<Enemy>();
                 fireDirection = (hit.transform.position - transform.position).normalized;
+                OnHitInfos?.Invoke(hit,fireDirection);
                 firedRigidbody = hit.rigidbody;
                 if(enemy != null)
                 {
