@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -22,6 +21,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] PlayerShooting playerShooting;
     bool isAlive;
     bool isCleanable;
+    public event Action<Rigidbody> OnBloodFloor;
 
 
     void Awake()
@@ -126,6 +126,7 @@ public class Enemy : MonoBehaviour
         StopAllCoroutines();
         isAlive = false;
         OnRagdollPhysic?.Invoke(playerShooting.FireDirection , playerShooting.FiredRigidbody);
+        OnBloodFloor?.Invoke(playerShooting.FiredRigidbody);
 
 
         Invoke(nameof(SetCleanable),3f); // öldükten 3 saniye sonra ölü bedeni temizleyebilme mekaniği

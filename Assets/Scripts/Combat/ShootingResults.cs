@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,7 +11,6 @@ public class ShootingResults : MonoBehaviour
     private int currentHole;
     private int currentBlood;
     List<GameObject> holeList = new List<GameObject>();
-    List<GameObject> bloodList = new List<GameObject>();
     private Vector3 bulletDirection;
     [SerializeField] private GameObject particle;
 
@@ -59,11 +56,6 @@ public class ShootingResults : MonoBehaviour
             holeList.Add(liveHole);
             liveHole.SetActive(false);
         }
-        for(int i=0; i<maxBlood; i++)
-        {
-            GameObject liveBlood = Instantiate(bloodDecalPrefab);
-            bloodList.Add(liveBlood);
-            liveBlood.SetActive(false);
-        }
     }
+
 }

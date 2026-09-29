@@ -47,13 +47,13 @@ public class SourceSoundManager : MonoBehaviour
     {
         if(mainState == PlayerStateManager.PlayerMainStates.Idle)
         {
-            if(isFire) { SetFireVoice();}
+            if(isFire && WeaponDirector.Instance.Index == 0) { SetFireVoice();}
             else if(isCrouching){ sourceVoice = crouchVoice;} 
             else{ sourceVoice = idleVoice;}   
         }
         else if(mainState == PlayerStateManager.PlayerMainStates.Walk)
         {
-            if(isFire){ SetFireVoice();}
+            if(isFire && WeaponDirector.Instance.Index == 0){ SetFireVoice();}
             else if(isCrouching){ sourceVoice = crouchWalkVoice;}
             else{sourceVoice = walkVoice;}
         }
