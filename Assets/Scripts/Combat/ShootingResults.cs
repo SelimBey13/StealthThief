@@ -7,9 +7,7 @@ public class ShootingResults : MonoBehaviour
     [SerializeField] private GameObject holeDecalPrefab;
     [SerializeField] private GameObject bloodDecalPrefab;
     [SerializeField] private int maxHole;
-    [SerializeField] private int maxBlood;
     private int currentHole;
-    private int currentBlood;
     List<GameObject> holeList = new List<GameObject>();
     private Vector3 bulletDirection;
     [SerializeField] private GameObject particle;

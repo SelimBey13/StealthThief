@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49f2c5a8f9103e9418f3cb167dbfbc8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResultLive
-  liveTime: 5
+  liveTime: 30
 --- !u!114 &6088088190045602129
 MonoBehaviour:
   m_ObjectHideFlags: 0

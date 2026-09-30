@@ -5,7 +5,6 @@ public class EnvanterManager : MonoBehaviour
     public static EnvanterManager Instance{get ; private set;}
     [SerializeField] private WeaponData mainPistol;
     [SerializeField] private WeaponData mainKnife;
-
     WeaponData[] envanter = new WeaponData[2];
     public WeaponData[] Envanter => envanter;
     private void Awake()
@@ -13,11 +12,6 @@ public class EnvanterManager : MonoBehaviour
         Awaking();
     }
 
-    void Start()
-    {
-        envanter[0] = mainPistol;
-        envanter[1] = mainKnife;
-    }
     void Awaking()
     {
         if(Instance != null && Instance != this)
@@ -29,6 +23,8 @@ public class EnvanterManager : MonoBehaviour
         {
             DontDestroyOnLoad(gameObject);
             Instance = this;
+            envanter[0] = mainPistol;
+            envanter[1] = mainKnife;
         }
     }
 
