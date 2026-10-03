@@ -4,9 +4,12 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
    public static GameManager Instance{get; private set;}
-   public static event Action<bool> OnChallengeCompleted;
+   [SerializeField] private PlayerLiving playerLiving;
+   public static event Action<bool> OnChallengeCompletedSuccesfully;
 
     [SerializeField] private bool canEscape = false;
+    public bool CanEscape => canEscape;
+    private bool isGameOver = false;
     void Awake()
     {
         Instance = this;
@@ -15,20 +18,35 @@ public class GameManager : MonoBehaviour
     void OnEnable()
     {
         ValuableInteractable.OnTakenItemNumber += SetItemNumber;
+        EscapeCarInteractable.OnPlayerEscapedWithCar += GameOver;
+        playerLiving.OnPlayerDead += GameOver;
     }
     void OnDisable()
     {
         ValuableInteractable.OnTakenItemNumber -= SetItemNumber;
+        EscapeCarInteractable.OnPlayerEscapedWithCar -= GameOver;
+        playerLiving.OnPlayerDead -= GameOver;
     }
 
     void SetItemNumber()
     {
         canEscape = true;
     }
-    
-    /*if(oyun bitme kosulları)
+
+    void GameOver()
     {
-        OnChallengeCompleted?.Invoke(true);
-    }*/
+        Debug.Log("oyunbittila");
+        if(isGameOver){return;}
+        isGameOver = true;
+        if(playerLiving.IsPlayerAlive)
+        {
+            OnChallengeCompletedSuccesfully?.Invoke(true);
+        }
+        else
+        {
+            OnChallengeCompletedSuccesfully?.Invoke(false);
+        }
+        
+    }
 
 }

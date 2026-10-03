@@ -568,7 +568,7 @@ GameObject:
   - component: {fileID: 111251022}
   - component: {fileID: 111251025}
   m_Layer: 5
-  m_Name: Map-1
+  m_Name: Depo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -641,25 +641,13 @@ MonoBehaviour:
       - m_Target: {fileID: 1162610488}
         m_TargetAssemblyTypeName: MainMenuController, Assembly-CSharp
         m_MethodName: LoadMap
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: GamePlay
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 859878194}
-        m_TargetAssemblyTypeName: GameSceneManager, Assembly-CSharp
-        m_MethodName: SaveSceneInformations
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 11400000, guid: de6b3c9b0729da54f8f76beda0a0d281, type: 2}
           m_ObjectArgumentAssemblyTypeName: SceneData, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: GamePlay
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &111251023
@@ -2336,7 +2324,7 @@ GameObject:
   - component: {fileID: 766148409}
   - component: {fileID: 766148408}
   m_Layer: 5
-  m_Name: Map-2
+  m_Name: A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2424,25 +2412,13 @@ MonoBehaviour:
       - m_Target: {fileID: 1162610488}
         m_TargetAssemblyTypeName: MainMenuController, Assembly-CSharp
         m_MethodName: LoadMap
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: GamePlay2
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 859878194}
-        m_TargetAssemblyTypeName: GameSceneManager, Assembly-CSharp
-        m_MethodName: SaveSceneInformations
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 11400000, guid: 935f6671801add74387d53924d120135, type: 2}
           m_ObjectArgumentAssemblyTypeName: SceneData, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: GamePlay2
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &766148410
@@ -4871,6 +4847,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1483970401}
   m_CullTransparentMesh: 1
+--- !u!1 &1487680794
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1487680795}
+  - component: {fileID: 1487680796}
+  m_Layer: 0
+  m_Name: ScoreManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1487680795
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1487680794}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.1132, y: 0, z: -8.48516}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1487680796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1487680794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6f722e4a89045b47a09941dd8098f14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScoreManager
+  totalChallangeMoney: 0
+  collectedValuable: 0
+  accountMoney: 0
+  employerTax: 0.2
 --- !u!1 &1496730138
 GameObject:
   m_ObjectHideFlags: 0
@@ -6473,3 +6497,4 @@ SceneRoots:
   - {fileID: 824557754}
   - {fileID: 510900807}
   - {fileID: 736406246}
+  - {fileID: 1487680795}

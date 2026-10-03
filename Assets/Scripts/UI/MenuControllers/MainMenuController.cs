@@ -51,9 +51,10 @@ public class MainMenuController : MonoBehaviour
         ShowPanel(settingsPanel , settingsFirstButton);
     }
 
-    public void LoadMap(string sceneName)
+    public void LoadMap(SceneData sceneData)
     {
-        SceneManager.LoadScene(sceneName);
+        GameSceneManager.Instance.SaveSceneInformations(sceneData);
+        SceneManager.LoadScene(sceneData.SceneName);
         InputManager.Instance.SwitchToPlayerMap();
         
     }

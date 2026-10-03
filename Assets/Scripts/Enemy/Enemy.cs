@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
     Vector3 playerLastLocation;
     public Vector3 PlayerLastLocation => playerLastLocation;
     [SerializeField] private Transform playerTransform;
-    public event Action OnPlayerShot;
+    public static event Action OnPlayerShot;
     public event Action<float> OnDistanceChanged;
     public event Action OnFirstTimePatrol;
     public event Action<EnemyStates> OnEnemyStateChanged;

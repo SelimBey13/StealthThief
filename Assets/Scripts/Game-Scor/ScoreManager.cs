@@ -14,30 +14,33 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private int collectedValuable;
     [SerializeField] private float accountMoney; //save sistemi gelince ayarlanacak
     [SerializeField] private float employerTax; // 0-1
-    bool challangeCompleted = false;
+    private float moneyLoss;
     public static event Action<float> OnAccountMoneyChanged;
+    public static event Action<float> OnTotalChallangeMoneyChanged;
 
     void OnEnable()
     {
         ValuableInteractable.OnItemTaken += SetChallangeMoney;
-        GameManager.OnChallengeCompleted += ControlChallengeSuccess;
+        GameManager.OnChallengeCompletedSuccesfully += ControlChallengeSuccess;
     }
 
     void OnDisable()
     {
         ValuableInteractable.OnItemTaken -= SetChallangeMoney;
-        GameManager.OnChallengeCompleted -= ControlChallengeSuccess;
+        GameManager.OnChallengeCompletedSuccesfully -= ControlChallengeSuccess;
     }
 
     void DepositCollectedMoney()
     {
             accountMoney += totalChallangeMoney*(1f-employerTax);
+            moneyLoss = totalChallangeMoney*employerTax;
             OnAccountMoneyChanged?.Invoke(accountMoney);
     }
 
     void SetChallangeMoney(float value)
     {
         totalChallangeMoney += value;
+        OnTotalChallangeMoneyChanged?.Invoke(totalChallangeMoney);
     }
     void AwakingController()
     {
@@ -52,11 +55,11 @@ public class ScoreManager : MonoBehaviour
 
     void ControlChallengeSuccess(bool value)
     {
-        challangeCompleted = value;
         if(value)
         {
             DepositCollectedMoney();
         }
+        totalChallangeMoney = 0f;
     }
 
 

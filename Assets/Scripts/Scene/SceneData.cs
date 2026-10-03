@@ -9,5 +9,6 @@ public class SceneData : ScriptableObject
     [SerializeField] private int enemyCount;
 
     public int EnemyCount => enemyCount;
+    public string SceneName => sceneName;
     
 }

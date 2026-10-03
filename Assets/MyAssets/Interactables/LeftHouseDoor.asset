@@ -15,4 +15,4 @@ MonoBehaviour:
   interactableType: 0
   interactableName: HouseDoor
   keyboardIcon: {fileID: -1569355150, guid: 069a00c4a21d8654bbe27600f3ba7103, type: 3}
-  gamepadIcon: {fileID: 0}
+  gamepadIcon: {fileID: -725581648, guid: 069a00c4a21d8654bbe27600f3ba7103, type: 3}

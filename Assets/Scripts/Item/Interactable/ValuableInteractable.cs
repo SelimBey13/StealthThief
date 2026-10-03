@@ -11,7 +11,6 @@ public class ValuableInteractable : Interactable
     public override void Interact()
     {
         gameObject.SetActive(false);
-        Debug.Log("item alindi test");
         OnItemTaken?.Invoke(value);
         OnTakenItemNumber?.Invoke();
         
